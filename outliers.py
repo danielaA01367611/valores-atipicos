@@ -32,12 +32,12 @@ iqr= percentile75 - percentile25
 
 Limite_Superior_iqr= percentile75 + 1.5*iqr
 Limite_Inferior_iqr= percentile25 - 1.5*iqr
-#print("Limite superior permitido", Limite_Superior_iqr)
-#print("Limite inferior permitido", Limite_Inferior_iqr)
+print("Limite superior permitido usando cuartiles", Limite_Superior_iqr)
+print("Limite inferior permitido usando cuartiles", Limite_Inferior_iqr)
 
 #obtenemos los datos limpios
 data_clean_iqr= df[(y<=Limite_Superior_iqr)&(y>=Limite_Inferior_iqr)]
-print(data_clean_iqr)
+#print(data_clean_iqr)
 
 #fig = plt.figure(figsize =(5, 3))
 #plt.boxplot(data_clean_iqr["ventas_precios_corrientes"]) 
@@ -51,4 +51,21 @@ print(data_clean_iqr)
 #plt.ylabel('Frecuencia')
 #plt.show()
 
-data_clean_iqr["ventas_precios_corrientes"].to_csv('ventas_precios_corrientes.csv')
+#data_clean_iqr["ventas_precios_corrientes"].to_csv('ventas_precios_corrientes.csv')
+
+
+y=df["ventas_precios_corrientes"]
+Limite_Superior= y.mean() + 3*y.std()
+Limite_Inferior= y.mean() - 3*y.std()
+print("Limite superior permitido usando std", Limite_Superior)
+print("Limite inferior permitido usando std", Limite_Inferior)
+
+data_clean_iqr= df[(y<=Limite_Superior_iqr)&(y>=Limite_Inferior_iqr)]
+print(data_clean_iqr)
+
+#histograma
+
+#boxplot
+
+#fue mas eficiente el uso de cuartiles para eliminar los valores atipicos
+
