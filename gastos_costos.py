@@ -183,4 +183,83 @@ plt.xlabel('IVA')
 plt.ylabel('Frecuencia')
 #plt.show()
 
-data_clean_dev_std["IVA"].to_csv('IVA_sin_outliers(std).csv')
+#data_clean_dev_std["IVA"].to_csv('IVA_sin_outliers(std).csv')
+
+#TERCERA COLUMNA: TOTAL MX
+
+#histograma inicial
+fig = plt.figure(figsize =(7, 3))
+plt.hist(x=df["TOTAL MX"], color='red', rwidth=0.50)
+plt.title('Histograma de TOTAL MX')
+plt.xlabel('TOTAL MX')
+plt.ylabel('Frecuencia')
+#plt.show()
+
+#boxplot inicial
+fig = plt.figure(figsize =(5, 3))
+plt.boxplot(df["TOTAL MX"]) 
+plt.title("Outliers de TOTAL MX")
+#plt.show()
+
+#MÉTODO ENCONTRANDO CUARTILES.
+y=df["TOTAL MX"]
+#print(y)
+
+percentile25=y.quantile(0.25) #Q1
+#print(percentile25)
+percentile75=y.quantile(0.75) #Q3
+#print(percentile75)
+iqr= percentile75 - percentile25
+#print(iqr)
+
+Limite_Superior_iqr= percentile75 + 1.5*iqr
+Limite_Inferior_iqr= percentile25 - 1.5*iqr
+#print("Limite superior permitido", Limite_Superior_iqr)
+#print("Limite inferior permitido", Limite_Inferior_iqr)
+
+#Obtenemos datos limpios
+data_clean_iqr= df[(y<=Limite_Superior_iqr)&(y>=Limite_Inferior_iqr)]
+#print(data_clean_iqr)
+
+#Realizamos diagrama de caja o bigotes limpio
+fig = plt.figure(figsize =(5, 3))
+plt.boxplot(data_clean_iqr["TOTAL MX"]) 
+plt.title("TOTAL MX sin outliers (metodo cuartiles)")
+#plt.show()
+
+#Realizamos histograma limpio
+fig = plt.figure(figsize =(7, 3))
+plt.hist(x=df["TOTAL MX"], color='blue', rwidth=0.50)
+plt.title('Histograma de TOTAL MX sin outliers (metodo cuartiles)')
+plt.xlabel('TOTAL MX')
+plt.ylabel('Frecuencia')
+#plt.show()
+
+#data_clean_iqr["TOTAL MX"].to_csv('TOTAL MX_sin_outliers.csv')
+
+#MÉTODO DESVIACIÓN ESTANDAR
+y=df["TOTAL MX"]
+Limite_Superior_dev_std= y.mean() + 3 * y.std()
+Limite_Inferior_dev_std= y.mean() - 3 * y.std()
+#print("Limite superior permitido usando desviación estandar", Limite_Superior_dev_std)
+#print("Limite inferior permitido usando desviación estandar", Limite_Inferior_dev_std)
+
+#Obtenemos datos limpios
+data_clean_dev_std= df[(y<=Limite_Superior_dev_std)&(y>=Limite_Inferior_dev_std)]
+#print(data_clean_dev_std)
+
+#Realizamos diagrama de caja o bigotes limpio
+fig = plt.figure(figsize =(5, 3))
+plt.boxplot(data_clean_iqr["TOTAL MX"]) 
+plt.title("TOTAL MX sin outliers (metodo std)")
+#plt.show()
+
+#Obtenemos histograma limpio
+fig = plt.figure(figsize =(7, 3))
+plt.hist(x=df["TOTAL MX"], color='blue', rwidth=0.50)
+plt.title('Histograma de TOTAL MX sin outliers con std')
+plt.xlabel('TOTAL MX')
+plt.ylabel('Frecuencia')
+plt.show()
+
+#data_clean_dev_std["TOTAL MX"].to_csv('TOTAL MX_sin_outliers(std).csv')
